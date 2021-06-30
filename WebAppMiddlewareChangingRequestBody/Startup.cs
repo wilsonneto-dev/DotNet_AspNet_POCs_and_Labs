@@ -65,6 +65,16 @@ namespace WebAppMiddlewareChangingRequestBody
 
                         if (!string.IsNullOrEmpty(userIdFromHeader) && objRequestBody != null)
                         {
+                            if(userIdFromHeader == "0")
+                            {
+                                var errorBodyJson = JsonConvert.SerializeObject(new {  Error = 400, Message = "Ok" });
+                                var erroBytes = Encoding.UTF8.GetBytes(errorBodyJson);
+                                var errorBodyStream = new MemoryStream(erroBytes);
+                                context.Response.StatusCode = 401; //UnAuthorized
+                                await context.Response.Body.WriteAsync(erroBytes, 0, erroBytes.Length);
+                                return;
+                            }
+
                             objRequestBody.UserId = userIdFromHeader;
                             var newBodyJson = JsonConvert.SerializeObject(objRequestBody);
                             var requestInputInBytes = Encoding.UTF8.GetBytes(newBodyJson);
