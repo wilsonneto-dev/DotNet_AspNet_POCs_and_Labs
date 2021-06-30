@@ -69,8 +69,7 @@ namespace WebAppMiddlewareChangingRequestBody
                             {
                                 var errorBodyJson = JsonConvert.SerializeObject(new {  Error = 400, Message = "Ok" });
                                 var erroBytes = Encoding.UTF8.GetBytes(errorBodyJson);
-                                var errorBodyStream = new MemoryStream(erroBytes);
-                                context.Response.StatusCode = 401; //UnAuthorized
+                                context.Response.StatusCode = 410; //UnAuthorized
                                 await context.Response.Body.WriteAsync(erroBytes, 0, erroBytes.Length);
                                 return;
                             }
